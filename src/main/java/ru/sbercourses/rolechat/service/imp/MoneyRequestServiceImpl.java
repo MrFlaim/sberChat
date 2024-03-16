@@ -1,10 +1,10 @@
-package ru.sbercourses.rolechat.sevice.imp;
+package ru.sbercourses.rolechat.service.imp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.sbercourses.rolechat.dao.MoneyRequestRepository;
 import ru.sbercourses.rolechat.model.MoneyRequest;
 import ru.sbercourses.rolechat.model.exceptions.NoSuchMoneyRequestException;
-import ru.sbercourses.rolechat.sevice.MoneyRequestService;
+import ru.sbercourses.rolechat.service.MoneyRequestService;
 
 import java.util.List;
 

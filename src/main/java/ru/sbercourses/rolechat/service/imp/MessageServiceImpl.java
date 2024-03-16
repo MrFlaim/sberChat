@@ -1,10 +1,10 @@
-package ru.sbercourses.rolechat.sevice.imp;
+package ru.sbercourses.rolechat.service.imp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.sbercourses.rolechat.dao.MessageRepository;
 import ru.sbercourses.rolechat.model.Message;
 import ru.sbercourses.rolechat.model.exceptions.NoSuchMessageException;
-import ru.sbercourses.rolechat.sevice.MessageService;
+import ru.sbercourses.rolechat.service.MessageService;
 
 import java.util.List;
 

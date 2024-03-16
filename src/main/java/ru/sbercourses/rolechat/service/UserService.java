@@ -1,6 +1,5 @@
-package ru.sbercourses.rolechat.sevice;
+package ru.sbercourses.rolechat.service;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import ru.sbercourses.rolechat.model.User;
 
