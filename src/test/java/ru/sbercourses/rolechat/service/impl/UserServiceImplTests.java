@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Import;
 import ru.sbercourses.rolechat.model.User;
 import ru.sbercourses.rolechat.model.enums.Role;
 import ru.sbercourses.rolechat.model.exceptions.NoSuchUserException;
-import ru.sbercourses.rolechat.sevice.UserService;
-import ru.sbercourses.rolechat.sevice.imp.UserServiceImpl;
+import ru.sbercourses.rolechat.service.UserService;
+import ru.sbercourses.rolechat.service.imp.UserServiceImpl;
 
 import java.util.List;
 

@@ -8,8 +8,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.sbercourses.rolechat.model.MoneyRequest;
 import ru.sbercourses.rolechat.model.exceptions.NoSuchMoneyRequestException;
-import ru.sbercourses.rolechat.sevice.MoneyRequestService;
-import ru.sbercourses.rolechat.sevice.imp.MoneyRequestServiceImpl;
+import ru.sbercourses.rolechat.service.MoneyRequestService;
+import ru.sbercourses.rolechat.service.imp.MoneyRequestServiceImpl;
 
 import java.util.List;
 

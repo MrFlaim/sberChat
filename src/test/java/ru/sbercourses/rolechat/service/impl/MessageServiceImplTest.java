@@ -8,8 +8,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import ru.sbercourses.rolechat.model.Message;
 import ru.sbercourses.rolechat.model.exceptions.NoSuchMessageException;
-import ru.sbercourses.rolechat.sevice.MessageService;
-import ru.sbercourses.rolechat.sevice.imp.MessageServiceImpl;
+import ru.sbercourses.rolechat.service.MessageService;
+import ru.sbercourses.rolechat.service.imp.MessageServiceImpl;
 
 import java.util.Date;
 import java.util.List;
