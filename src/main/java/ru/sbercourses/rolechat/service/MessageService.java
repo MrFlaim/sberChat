@@ -1,11 +1,9 @@
 package ru.sbercourses.rolechat.service;
 
-import org.springframework.stereotype.Service;
 import ru.sbercourses.rolechat.model.Message;
 
 import java.util.List;
 
-@Service
 public interface MessageService {
     void addMessage(Message message);
 

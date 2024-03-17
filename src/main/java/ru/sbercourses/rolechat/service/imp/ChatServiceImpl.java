@@ -1,6 +1,7 @@
 package ru.sbercourses.rolechat.service.imp;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.sbercourses.rolechat.dao.ChatRepository;
 import ru.sbercourses.rolechat.model.Chat;
 import ru.sbercourses.rolechat.model.exceptions.NoSuchChatException;
@@ -8,6 +9,7 @@ import ru.sbercourses.rolechat.service.ChatService;
 
 import java.util.List;
 
+@Service
 public class ChatServiceImpl implements ChatService {
     private final ChatRepository chatRepository;
 

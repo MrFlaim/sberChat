@@ -1,11 +1,9 @@
 package ru.sbercourses.rolechat.service;
 
-import org.springframework.stereotype.Service;
 import ru.sbercourses.rolechat.model.User;
 
 import java.util.List;
 
-@Service
 public interface UserService {
     void addUser(User user);
 
@@ -14,6 +12,8 @@ public interface UserService {
     User getUserByLogin(String login);
 
     List<User> getAllUserByChatId(long chatId);
+
+    List<User> getAllUserByChatIdAndRoleId(long chatId, long roleId);
 
     void updateUser(User user);
 

@@ -1,6 +1,7 @@
 package ru.sbercourses.rolechat.service.imp;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.sbercourses.rolechat.dao.MoneyRequestRepository;
 import ru.sbercourses.rolechat.model.MoneyRequest;
 import ru.sbercourses.rolechat.model.exceptions.NoSuchMoneyRequestException;
@@ -8,6 +9,7 @@ import ru.sbercourses.rolechat.service.MoneyRequestService;
 
 import java.util.List;
 
+@Service
 public class MoneyRequestServiceImpl implements MoneyRequestService {
 
     private final MoneyRequestRepository moneyRequestRepository;

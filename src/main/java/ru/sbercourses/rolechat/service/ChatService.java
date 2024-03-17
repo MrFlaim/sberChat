@@ -1,11 +1,9 @@
 package ru.sbercourses.rolechat.service;
 
-import org.springframework.stereotype.Service;
 import ru.sbercourses.rolechat.model.Chat;
 
 import java.util.List;
 
-@Service
 public interface ChatService {
     void addChat(Chat chat);
 
