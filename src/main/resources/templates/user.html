@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+</head>
+<body>
+<h1>User List</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Login</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Phone Number</th>
+        <th>Online Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <td th:text="${user.id}"></td>
+    <td th:text="${user.login}"></td>
+    <td th:text="${user.name}"></td>
+    <td th:text="${user.surname}"></td>
+    <td th:text="${user.phoneNumber}"></td>
+    <td th:text="${user.onlineStatus} ? 'Online' : 'Offline'"></td>
+    </tbody>
+</table>
+<a href="/logout">Выйти</a>
+</body>
+</html>
