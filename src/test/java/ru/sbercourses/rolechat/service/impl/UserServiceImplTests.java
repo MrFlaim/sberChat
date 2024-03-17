@@ -5,7 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.sbercourses.rolechat.model.RoleEntity;
 import ru.sbercourses.rolechat.model.User;
 import ru.sbercourses.rolechat.model.enums.Role;
 import ru.sbercourses.rolechat.model.exceptions.NoSuchUserException;
@@ -13,9 +16,11 @@ import ru.sbercourses.rolechat.service.UserService;
 import ru.sbercourses.rolechat.service.imp.UserServiceImpl;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @DisplayName("Тест методов UserServiceImplTests")
 @DataJpaTest
@@ -25,11 +30,21 @@ public class UserServiceImplTests {
     @Autowired
     private UserService userService;
 
+    @MockBean
+    private PasswordEncoder passwordEncoder;
+
     @DisplayName("Get user by id")
     @Test
     public void shouldGetUserFromDbById() {
         User user = userService.getUserById(1);
         assertThat(user).hasFieldOrPropertyWithValue("name", "John");
+    }
+
+    @DisplayName("Get user by chatId and RoleId")
+    @Test
+    public void shouldGetUserFromDbByChatIdAndRoleId() {
+        List<User> users = userService.getAllUserByChatIdAndRoleId(1, 1);
+        assertThat(users).hasSize(2);
     }
 
     @DisplayName("Get user by login")
@@ -67,9 +82,12 @@ public class UserServiceImplTests {
     @Test
     public void shouldAddUserAndGetHimFromDb() {
         User user = new User();
+        RoleEntity role = new RoleEntity();
+        role.setRole(Role.USER);
         user.setLogin("newuser");
         user.setPassword("newpassword");
-        user.setRole(Role.USER);
+        when(passwordEncoder.encode("newpassword")).thenReturn("EncodePassword");
+        user.setRoles(Set.of(role));
         user.setName("New");
         user.setSurname("User");
         user.setPhoneNumber("9106280056");
