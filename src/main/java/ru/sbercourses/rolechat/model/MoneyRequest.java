@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Map;
 
 @Entity
-@Table(name = "money_request")
+@Table(name = "t_money_request")
 public class MoneyRequest {
 
     @Id
@@ -19,12 +19,12 @@ public class MoneyRequest {
     private double moneyRequest;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User userWhoNeedsMoney;
 
     @ElementCollection
-    @CollectionTable(name = "user_to_money_request", joinColumns = @JoinColumn(name = "money_request_id"))
-    @MapKeyJoinColumn(name = "client_id")
+    @CollectionTable(name = "t_user_to_money_request", joinColumns = @JoinColumn(name = "money_request_id"))
+    @MapKeyJoinColumn(name = "user_id")
     @Column(name = "money_send")
     private Map<User, Integer> usersWhoSendMoney;
 

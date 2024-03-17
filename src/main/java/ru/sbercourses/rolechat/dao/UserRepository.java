@@ -11,4 +11,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByChats_Id(long chatId);
 
+    List<User> findAllByChats_IdAndRolesId(long chatId, long roleId);
 }

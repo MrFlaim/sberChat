@@ -1,14 +1,15 @@
 package ru.sbercourses.rolechat.model;
 
 
-import ru.sbercourses.rolechat.model.enums.Role;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "client")
-public class User {
+@Table(name = "t_user")
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +21,13 @@ public class User {
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    private Role role;
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "t_user_role",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
+    private Set<RoleEntity> roles;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -36,10 +41,10 @@ public class User {
     @Column(name = "online_status", nullable = false)
     private boolean onlineStatus = false;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "chat_to_client",
-            joinColumns = @JoinColumn(name = "client_id"),
+            name = "t_chat_to_user",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "chat_id")
     )
     private List<Chat> chats;
@@ -47,17 +52,22 @@ public class User {
     public User() {
     }
 
-    public User(long id, String login, String password, Role role, String name, String surname,
+    public User(long id, String login, String password, Set<RoleEntity> roles, String name, String surname,
                 String phoneNumber, boolean onlineStatus, List<Chat> chats) {
         this.id = id;
         this.login = login;
         this.password = password;
-        this.role = role;
+        this.roles = roles;
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
         this.onlineStatus = onlineStatus;
         this.chats = chats;
+    }
+
+    @Override
+    public Set<RoleEntity> getAuthorities() {
+        return roles;
     }
 
     public long getId() {
@@ -80,16 +90,41 @@ public class User {
         return password;
     }
 
+    @Override
+    public String getUsername() {
+        return login;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<RoleEntity> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<RoleEntity> roles) {
+        this.roles = roles;
     }
 
     public String getName() {
