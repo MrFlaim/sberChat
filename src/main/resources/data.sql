@@ -29,6 +29,7 @@ VALUES (1, 1),
 INSERT INTO t_chat_to_user (user_id, chat_id)
 VALUES (1, 1),
        (2, 1),
+       (2, 2),
        (3, 2),
        (4, 3),
        (1, 2),
