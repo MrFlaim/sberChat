@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Details</title>
+</head>
+<body>
+<h1>Chat Details</h1>
+<h2 th:text="${chat.chatName}"></h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>User</th>
+        <th>Message</th>
+        <th>Create Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="message : ${chat.messages}">
+        <td th:text="${message.user.name}"></td>
+        <td>
+            <th:block th:if="${message.user.id eq user.id}">
+                <form method="post"
+                      th:action="@{/chats/{chatId}/messages/{messageId}(chatId=${chat.id}, messageId = ${message.id})}">
+                    <input type="hidden" name="chatId" th:value="${chat.id}">
+                    <input type="hidden" name="messageId" th:value="${message.id}">
+                    <input type="text" name="text" th:value="${message.message}">
+                    <button type="submit">Edit</button>
+                </form>
+            </th:block>
+            <th:block th:unless="${message.user.id eq user.id}">
+                <span th:text="${message.message}"></span>
+            </th:block>
+        </td>
+        <td th:text="${message.createDate}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+<h2>Money Requests</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Money Request</th>
+        <th>User Name</th>
+        <th>User Surname</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="moneyRequest : ${moneyRequests}">
+        <td>
+            <a th:href="@{/chats/{chatId}/moneyRequests/{moneyRequestId}(chatId=${chat.id}, moneyRequestId = ${moneyRequest.id})}"
+               th:text="${moneyRequest.moneyRequest}"></a></td>
+        <td th:text="${moneyRequest.userWhoNeedsMoney.name}"></td>
+        <td th:text="${moneyRequest.userWhoNeedsMoney.surname}"></td>
+    </tr>
+    </tbody>
+</table>
+<h2>Add Message</h2>
+<form method="post" th:action="@{/chats/{chatId}/NewMessage(chatId=${chat.id})}">
+    <input type="hidden" name="chatId" th:value="${chat.id}">
+    <input type="hidden" name="userId" th:value="${user.id}">
+    <input type="text" name="text"/>
+    <button type="submit">Send Message</button>
+</form>
+</body>
+</html>

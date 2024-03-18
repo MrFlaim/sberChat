@@ -14,4 +14,6 @@ public interface MessageService {
     void updateMessage(Message message);
 
     void deleteMessageById(long id);
+
+    void writeMessage(long userId, long chatId, String messageText);
 }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat List</title>
+</head>
+<body>
+<h1>Chat List</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Chat Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="chat : ${chats}">
+        <td th:text="${chat.id}"></td>
+        <td><a th:href="@{'/chats/' + ${chat.id}}" th:text="${chat.chatName}"></a></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Create New Chat</h2>
+<form method="post" th:action="@{/chats/createChat}">
+    <input type="text" name="chatName" placeholder="Chat Name" required>
+    <button type="submit">Create Chat</button>
+</form>
+</body>
+</html>

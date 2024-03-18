@@ -26,13 +26,13 @@ public class MoneyRequest {
     @CollectionTable(name = "t_user_to_money_request", joinColumns = @JoinColumn(name = "money_request_id"))
     @MapKeyJoinColumn(name = "user_id")
     @Column(name = "money_send")
-    private Map<User, Integer> usersWhoSendMoney;
+    private Map<User, Long> usersWhoSendMoney;
 
 
     public MoneyRequest() {
     }
 
-    public MoneyRequest(long id, Chat chat, double moneyRequest, User userWhoNeedsMoney, Map<User, Integer> usersWhoSendMoney) {
+    public MoneyRequest(long id, Chat chat, double moneyRequest, User userWhoNeedsMoney, Map<User, Long> usersWhoSendMoney) {
         this.id = id;
         this.chat = chat;
         this.moneyRequest = moneyRequest;
@@ -72,11 +72,11 @@ public class MoneyRequest {
         this.userWhoNeedsMoney = userWhoNeedsMoney;
     }
 
-    public Map<User, Integer> getUsersWhoSendMoney() {
+    public Map<User, Long> getUsersWhoSendMoney() {
         return usersWhoSendMoney;
     }
 
-    public void setUsersWhoSendMoney(Map<User, Integer> usersWhoSendMoney) {
+    public void setUsersWhoSendMoney(Map<User, Long> usersWhoSendMoney) {
         this.usersWhoSendMoney = usersWhoSendMoney;
     }
 }

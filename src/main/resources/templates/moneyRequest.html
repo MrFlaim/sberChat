@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Requests</title>
+</head>
+<body>
+<h1>Money Requests</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Money Request</th>
+        <th>User Name</th>
+        <th>User Surname</th>
+        <th>Users Who Sent Money</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td th:text="${moneyRequest.moneyRequest}"></td>
+        <td th:text="${moneyRequest.userWhoNeedsMoney.name}"></td>
+        <td th:text="${moneyRequest.userWhoNeedsMoney.surname}"></td>
+        <td>
+            <table border="1">
+                <tr th:each="entry : ${moneyRequest.usersWhoSendMoney}">
+                    <td th:text="${entry.key.name}"></td>
+                    <td th:text="${entry.value}"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Add Money to Request</h2>
+<form method="post"
+      th:action="@{/chats/{chatId}/moneyRequests/{moneyRequestId}/addMoney(chatId=${chatId}, moneyRequestId=${moneyRequest.id})}">
+    <input type="hidden" name="chatId" th:value="${chatId}">
+    <input type="hidden" name="moneyRequestId" th:value="${moneyRequest.id}">
+    <input type="number" name="amount" placeholder="Enter amount">
+    <button type="submit">Add Money</button>
+</form>
+</body>
+</html>
