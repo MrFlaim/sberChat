@@ -17,7 +17,7 @@ public class Chat {
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Message> messages;
 
-    @ManyToMany(mappedBy = "chats", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "chats", fetch = FetchType.LAZY)
     private List<User> users;
 
     public Chat() {

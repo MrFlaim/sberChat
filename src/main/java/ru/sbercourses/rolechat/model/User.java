@@ -1,15 +1,13 @@
 package ru.sbercourses.rolechat.model;
 
 
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "t_user")
-public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +19,7 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "t_user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -41,7 +39,7 @@ public class User implements UserDetails {
     @Column(name = "online_status", nullable = false)
     private boolean onlineStatus = false;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "t_chat_to_user",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -65,11 +63,6 @@ public class User implements UserDetails {
         this.chats = chats;
     }
 
-    @Override
-    public Set<RoleEntity> getAuthorities() {
-        return roles;
-    }
-
     public long getId() {
         return id;
     }
@@ -90,30 +83,11 @@ public class User implements UserDetails {
         return password;
     }
 
-    @Override
+
     public String getUsername() {
         return login;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 
     public void setPassword(String password) {
         this.password = password;

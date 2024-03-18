@@ -1,6 +1,5 @@
 package ru.sbercourses.rolechat.model;
 
-import org.springframework.security.core.GrantedAuthority;
 import ru.sbercourses.rolechat.model.enums.Role;
 
 import javax.persistence.*;
@@ -8,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "t_role")
-public class RoleEntity implements GrantedAuthority {
+public class RoleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +31,6 @@ public class RoleEntity implements GrantedAuthority {
 
     public RoleEntity(Role role) {
         this.role = role;
-    }
-
-    @Override
-    public String getAuthority() {
-        return role.name();
     }
 
     public Long getId() {
