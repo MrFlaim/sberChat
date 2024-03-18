@@ -11,6 +11,8 @@ public interface UserService {
 
     User getUserByLogin(String login);
 
+    List<User> getAllUsers();
+
     List<User> getAllUserByChatId(long chatId);
 
     List<User> getAllUserByChatIdAndRoleId(long chatId, long roleId);

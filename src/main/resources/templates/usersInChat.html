@@ -7,17 +7,14 @@
 </head>
 <body>
 <h1>User List</h1>
-<div th:if="${param.errorMessage}" style="color: red;">
-    <p th:text="${param.errorMessage}"></p>
-</div>
-
-
 <table border="1">
     <thead>
     <tr>
+        <th>ID</th>
         <th>Login</th>
         <th>Name</th>
         <th>Surname</th>
+        <th>Phone Number</th>
         <th>Online Status</th>
         <th>Chats</th>
         <th>Action</th>
@@ -25,9 +22,11 @@
     </thead>
     <tbody>
     <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
         <td th:text="${user.login}"></td>
         <td th:text="${user.name}"></td>
         <td th:text="${user.surname}"></td>
+        <td th:text="${user.phoneNumber}"></td>
         <td th:text="${user.onlineStatus} ? 'Online' : 'Offline'"></td>
         <td>
             <ul>
@@ -35,13 +34,12 @@
             </ul>
         </td>
         <td>
-            <form method="post" th:action="@{/users/addToChat}">
+            <form method="post" th:action="@{/users/removeUserFromChat}">
                 <input type="hidden" th:name="userId" th:value="${user.id}">
                 <select name="chatId">
-                    <option th:each="chat : ${sessionUser.chats}" th:value="${chat.id}"
-                            th:text="${chat.chatName}"></option>
+                    <option th:each="chat : ${user.chats}" th:value="${chat.id}" th:text="${chat.chatName}"></option>
                 </select>
-                <button type="submit">Add to Chat</button>
+                <button type="submit">Remove from Chat</button>
             </form>
         </td>
     </tr>
