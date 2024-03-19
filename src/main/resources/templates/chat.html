@@ -69,7 +69,7 @@
                                 <h2 class="text-center">Add Money Request</h2>
                                 <form th:action="@{/chats/{chatId}/moneyRequests/add(chatId=${chat.id})}" method="post">
                                     <input type="hidden" name="chatId" th:value="${chat.id}">
-                                    <input type="text" name="moneyRequest" class="form-control mb-2"
+                                    <input type="number" name="moneyRequest" class="form-control mb-2"
                                            placeholder="Enter money request" required>
                                     <select name="currency" class="form-control mb-2" required>
                                         <option th:each="currency : ${T(ru.sbercourses.rolechat.model.enums.CurrencyChar).values()}"
