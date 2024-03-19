@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <header class="site-header bg-primary">
+        <ul class="nav nav-pills ml-auto justify-content-between">
+            <li class="nav-item">
+                <span class="nav-link" th:text="${session.user.name + ' ' + session.user.surname}"></span>
+            </li>
+            <li th:if="${session.roles.contains('FAMILY_HEAD')}" class="nav-item">
+                <a href="/users" class="btn btn-primary nav-link">Users</a>
+            </li>
+            <li class="nav-item">
+                <a href="/chats/" class="btn btn-primary nav-link">Chats</a>
+            </li>
+            <li class="nav-item">
+                <a href="/logout" class="btn btn-danger">Exit</a>
+            </li>
+        </ul>
+    </header>
+    <div class="mt-4">
+        <form method="post" action="/currency/selectCurrentChar"
+              class="form-inline justify-content-between text-center">
+            <div>
+                <label for="currentChar" class="form-label">Choose currency:</label>
+                <select class="form-select" id="currentChar" name="currentChar">
+                    <option th:each="currency : ${T(ru.sbercourses.rolechat.model.enums.CurrencyChar).values()}"
+                            th:value="${currency}" th:text="${currency}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Choose</button>
+        </form>
+    </div>
+    <table class="table table-striped mt-4">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+            <th>Currency</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entry : ${currencyMap}">
+            <td th:text="${entry.value.name}"></td>
+            <td th:text="${#numbers.formatDecimal(entry.value.value,  1, 'COMMA', 3, 'POINT')} + ' ' + ${entry.key.name()}"></td>
+            <td>
+                = 1.0 <span th:text="${currentChar}"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

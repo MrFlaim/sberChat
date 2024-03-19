@@ -1,31 +1,51 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat List</title>
+    <title>Chats</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h1>Chat List</h1>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Chat Name</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="chat : ${chats}">
-        <td th:text="${chat.id}"></td>
-        <td><a th:href="@{'/chats/' + ${chat.id}}" th:text="${chat.chatName}"></a></td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <header class="site-header bg-primary">
+        <ul class="nav nav-pills ml-auto justify-content-between">
+            <li class="nav-item">
+                <span class="nav-link" th:text="${session.user.name + ' ' + session.user.surname}"></span>
+            </li>
+            <li class="nav-item">
+                <a href="/currency" class="btn btn-primary nav-link">Rate</a>
+            </li>
+            <li th:if="${session.roles.contains('FAMILY_HEAD')}" class="nav-item">
+                <a href="/users" class="btn btn-primary nav-link">Users</a>
+            </li>
+            <li class="nav-item">
+                <a href="/logout" class="btn btn-danger">Exit</a>
+            </li>
+        </ul>
+    </header>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Chat Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="chat : ${chats}">
+            <td th:text="${chat.id}"></td>
+            <td><a th:href="@{'/chats/' + ${chat.id}}" th:text="${chat.chatName}"></a></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="text-center">
+        <h2>Create New Chat</h2>
+        <form method="post" th:action="@{/chats/createChat}" class="form-inline justify-content-center">
+            <input type="text" name="chatName" placeholder="Chat Name" required class="form-control mr-sm-2">
+            <button type="submit" class="btn btn-primary">Create Chat</button>
+        </form>
+    </div>
 
-<h2>Create New Chat</h2>
-<form method="post" th:action="@{/chats/createChat}">
-    <input type="text" name="chatName" placeholder="Chat Name" required>
-    <button type="submit">Create Chat</button>
-</form>
+</div>
 </body>
 </html>

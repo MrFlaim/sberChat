@@ -4,42 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Money Requests</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h1>Money Requests</h1>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Money Request</th>
-        <th>User Name</th>
-        <th>User Surname</th>
-        <th>Users Who Sent Money</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td th:text="${moneyRequest.moneyRequest}"></td>
-        <td th:text="${moneyRequest.userWhoNeedsMoney.name}"></td>
-        <td th:text="${moneyRequest.userWhoNeedsMoney.surname}"></td>
-        <td>
-            <table border="1">
-                <tr th:each="entry : ${moneyRequest.usersWhoSendMoney}">
-                    <td th:text="${entry.key.name}"></td>
-                    <td th:text="${entry.value}"></td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <header class="site-header bg-primary">
+        <ul class="nav nav-pills ml-auto justify-content-between">
+            <li class="nav-item">
+                <span class="nav-link" th:text="${session.user.name + ' ' + session.user.surname}"></span>
+            </li>
+            <li th:if="${session.roles.contains('FAMILY_HEAD')}" class="nav-item">
+                <a href="/users" class="btn btn-primary nav-link">Users</a>
+            </li>
+            <li class="nav-item">
+                <a href="/chats/" class="btn btn-primary nav-link">Chats</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{'/chats/' + ${chatId}}" class="btn btn-primary nav-link">Chat</a>
+            </li>
+            <li class="nav-item">
+                <a href="/logout" class="btn btn-danger">Exit</a>
+            </li>
+        </ul>
+    </header>
+    <table class="table">
+        <tr>
+            <th>Money Request</th>
+            <th>Currency</th>
+            <th>User Name</th>
+            <th>User Surname</th>
+            <th>Users Who Sent Money</th>
+        </tr>
+        <tbody>
+        <tr>
+            <td th:text="${#numbers.formatDecimal(moneyRequest.moneyRequest,  1, 'COMMA', 3, 'POINT')}"></td>
+            <td th:text="${moneyRequest.currency}"></td>
+            <td th:text="${moneyRequest.userWhoNeedsMoney.name}"></td>
+            <td th:text="${moneyRequest.userWhoNeedsMoney.surname}"></td>
+            <td>
+                <table class="table">
+                    <tbody>
+                    <tr th:each="entry : ${moneyRequest.usersWhoSendMoney}">
+                        <td th:text="${entry.key.name}"></td>
+                        <td th:text="${#numbers.formatDecimal(entry.value,  1, 'COMMA', 3, 'POINT')}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-<h2>Add Money to Request</h2>
-<form method="post"
-      th:action="@{/chats/{chatId}/moneyRequests/{moneyRequestId}/addMoney(chatId=${chatId}, moneyRequestId=${moneyRequest.id})}">
-    <input type="hidden" name="chatId" th:value="${chatId}">
-    <input type="hidden" name="moneyRequestId" th:value="${moneyRequest.id}">
-    <input type="number" name="amount" placeholder="Enter amount">
-    <button type="submit">Add Money</button>
-</form>
+    <div th:if="${moneyRequest.moneyRequest > 0}" class="text-center">
+        <h2>Donate Money to Request</h2>
+        <form method="post"
+              th:action="@{/chats/{chatId}/moneyRequests/{moneyRequestId}/addMoney(chatId=${chatId}, moneyRequestId=${moneyRequest.id})}">
+            <input type="hidden" name="chatId" th:value="${chatId}">
+            <input type="hidden" name="moneyRequestId" th:value="${moneyRequest.id}">
+            <input type="number" name="amount" class="form-control mb-2 mr-sm-2" placeholder="Enter amount" required>
+            <select name="currency" class="form-control mb-2 mr-sm-2" required>
+                <option th:each="currency : ${T(ru.sbercourses.rolechat.model.enums.CurrencyChar).values()}"
+                        th:value="${currency}" th:text="${currency}"></option>
+            </select>
+            <button type="submit" class="btn btn-primary mb-2">Add Money</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>

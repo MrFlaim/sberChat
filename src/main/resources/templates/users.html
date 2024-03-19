@@ -4,49 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h1>User List</h1>
-<div th:if="${param.errorMessage}" style="color: red;">
-    <p th:text="${param.errorMessage}"></p>
+<div class="container">
+    <header class="site-header bg-primary">
+        <ul class="nav nav-pills ml-auto justify-content-between">
+            <li class="nav-item">
+                <span class="nav-link" th:text="${session.user.name + ' ' + session.user.surname}"></span>
+            </li>
+            <li class="nav-item">
+                <a href="/currency" class="btn btn-primary nav-link">Rate</a>
+            </li>
+            <li class="nav-item">
+                <a href="/chats/" class="btn btn-primary nav-link">Chats</a>
+            </li>
+            <li class="nav-item">
+                <a href="/users/chat" class="btn btn-primary nav-link">Remove from chats</a>
+            </li>
+            <li class="nav-item">
+                <a href="/logout" class="btn btn-danger">Exit</a>
+            </li>
+        </ul>
+    </header>
+    <table class="table table-striped mt-4">
+        <tr>
+            <th>Login</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Online Status</th>
+            <th>Chats</th>
+            <th>Action</th>
+        </tr>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.login}"></td>
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.surname}"></td>
+            <td th:text="${user.onlineStatus} ? 'Online' : 'Offline'"></td>
+            <td>
+                <ul class="list-unstyled">
+                    <li th:each="chat : ${user.chats}" th:text="${chat.chatName}"></li>
+                </ul>
+            </td>
+            <td>
+                <form method="post" th:action="@{/users/addToChat}">
+                    <input type="hidden" th:name="userId" th:value="${user.id}">
+                    <select name="chatId" class="form-control">
+                        <option th:each="chat : ${sessionUser.chats}" th:value="${chat.id}"
+                                th:text="${chat.chatName}"></option>
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-2">Add to Chat</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-
-<table border="1">
-    <thead>
-    <tr>
-        <th>Login</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Online Status</th>
-        <th>Chats</th>
-        <th>Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.login}"></td>
-        <td th:text="${user.name}"></td>
-        <td th:text="${user.surname}"></td>
-        <td th:text="${user.onlineStatus} ? 'Online' : 'Offline'"></td>
-        <td>
-            <ul>
-                <li th:each="chat : ${user.chats}" th:text="${chat.chatName}"></li>
-            </ul>
-        </td>
-        <td>
-            <form method="post" th:action="@{/users/addToChat}">
-                <input type="hidden" th:name="userId" th:value="${user.id}">
-                <select name="chatId">
-                    <option th:each="chat : ${sessionUser.chats}" th:value="${chat.id}"
-                            th:text="${chat.chatName}"></option>
-                </select>
-                <button type="submit">Add to Chat</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<a href="/logout">Выйти</a>
 </body>
 </html>

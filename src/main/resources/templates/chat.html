@@ -4,67 +4,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Details</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h1>Chat Details</h1>
-<h2 th:text="${chat.chatName}"></h2>
-<table border="1">
-    <thead>
-    <tr>
-        <th>User</th>
-        <th>Message</th>
-        <th>Create Date</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="message : ${chat.messages}">
-        <td th:text="${message.user.name}"></td>
-        <td>
-            <th:block th:if="${message.user.id eq user.id}">
-                <form method="post"
-                      th:action="@{/chats/{chatId}/messages/{messageId}(chatId=${chat.id}, messageId = ${message.id})}">
-                    <input type="hidden" name="chatId" th:value="${chat.id}">
-                    <input type="hidden" name="messageId" th:value="${message.id}">
-                    <input type="text" name="text" th:value="${message.message}">
-                    <button type="submit">Edit</button>
-                </form>
-            </th:block>
-            <th:block th:unless="${message.user.id eq user.id}">
-                <span th:text="${message.message}"></span>
-            </th:block>
-        </td>
-        <td th:text="${message.createDate}"></td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <header class="site-header bg-primary">
+        <ul class="nav nav-pills ml-auto justify-content-between">
+            <li class="nav-item ">
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#sidebarContent"
+                        aria-expanded="false" aria-controls="sidebarContent">
+                    Show money requests
+                </button>
+            </li>
+            <li class="nav-item">
+                <span class="nav-link" th:text="${session.user.name + ' ' + session.user.surname}"></span>
+            </li>
+            <li class="nav-item">
+                <a href="/currency" class="btn btn-primary nav-link">Rate</a>
+            </li>
+            <li th:if="${session.roles.contains('FAMILY_HEAD')}" class="nav-item">
+                <a href="/users" class="btn btn-primary nav-link">Users</a>
+            </li>
+            <li class="nav-item">
+                <a href="/chats/" class="btn btn-primary nav-link">Chats</a>
+            </li>
+            <li class="nav-item">
+                <a href="/logout" class="btn btn-danger">Exit</a>
+            </li>
+        </ul>
+        <h2 class="text-center text-white" th:text="${chat.chatName}"></h2>
+    </header>
+    <div class="col-md-12">
+        <div class="sidebar">
+            <div class="collapse" id="sidebarContent">
+                <div class="col-md-12">
+                    <div class="sidebar">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered">
+                                    <thead class="thead-dark">
+                                    <tr>
+                                        <th>Money Request</th>
+                                        <th>Currency</th>
+                                        <th>User Name</th>
+                                        <th>User Surname</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="moneyRequest : ${moneyRequests}">
+                                        <td>
+                                            <a th:href="@{/chats/{chatId}/moneyRequests/{moneyRequestId}(chatId=${chat.id}, moneyRequestId=${moneyRequest.id})}"
+                                               th:text="${#numbers.formatDecimal(moneyRequest.moneyRequest,  1, 'COMMA', 3, 'POINT')}"></a>
+                                        </td>
+                                        <td th:text="${moneyRequest.currency}"></td>
+                                        <td th:text="${moneyRequest.userWhoNeedsMoney.name}"></td>
+                                        <td th:text="${moneyRequest.userWhoNeedsMoney.surname}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2 class="text-center">Add Money Request</h2>
+                                <form th:action="@{/chats/{chatId}/moneyRequests/add(chatId=${chat.id})}" method="post">
+                                    <input type="hidden" name="chatId" th:value="${chat.id}">
+                                    <input type="text" name="moneyRequest" class="form-control mb-2"
+                                           placeholder="Enter money request" required>
+                                    <select name="currency" class="form-control mb-2" required>
+                                        <option th:each="currency : ${T(ru.sbercourses.rolechat.model.enums.CurrencyChar).values()}"
+                                                th:value="${currency}" th:text="${currency}"></option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Add Money Request</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="scrollable-table">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>User Name</th>
+                        <th>Message</th>
+                        <th>Creation Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="message : ${chat.messages}">
+                        <td>
+                            <span th:text="${message.user.name}" class="font-weight-bold"
+                                  th:classappend="${message.user.onlineStatus} ? 'text-success' : 'text-danger'"></span>
+                        </td>
+                        <td>
+                            <div>
+                                <form th:if="${message.user.id eq user.id}"
+                                      th:action="@{/chats/{chatId}/messages/{messageId}(chatId=${chat.id}, messageId=${message.id})}"
+                                      method="post">
+                                    <input type="hidden" name="chatId" th:value="${chat.id}">
+                                    <input type="hidden" name="messageId" th:value="${message.id}">
+                                    <input type="text" name="text" th:value="${message.message}"
+                                           class="form-control mb-2" style="width: 100%">
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
+                                <span th:unless="${message.user.id eq user.id}" th:text="${message.message}"></span>
+                            </div>
+                        </td>
+                        <td th:text="${message.createDate}" style="max-width: 70px; word-wrap: break-word"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-<br>
+    <style>
+        .scrollable-table {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+    </style>
 
-<h2>Money Requests</h2>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Money Request</th>
-        <th>User Name</th>
-        <th>User Surname</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="moneyRequest : ${moneyRequests}">
-        <td>
-            <a th:href="@{/chats/{chatId}/moneyRequests/{moneyRequestId}(chatId=${chat.id}, moneyRequestId = ${moneyRequest.id})}"
-               th:text="${moneyRequest.moneyRequest}"></a></td>
-        <td th:text="${moneyRequest.userWhoNeedsMoney.name}"></td>
-        <td th:text="${moneyRequest.userWhoNeedsMoney.surname}"></td>
-    </tr>
-    </tbody>
-</table>
-<h2>Add Message</h2>
-<form method="post" th:action="@{/chats/{chatId}/NewMessage(chatId=${chat.id})}">
-    <input type="hidden" name="chatId" th:value="${chat.id}">
-    <input type="hidden" name="userId" th:value="${user.id}">
-    <input type="text" name="text"/>
-    <button type="submit">Send Message</button>
-</form>
+    <div class="col-md-12">
+        <form th:action="@{/chats/{chatId}/NewMessage(chatId=${chat.id})}" method="post">
+            <input type="hidden" name="chatId" th:value="${chat.id}">
+            <input type="hidden" name="userId" th:value="${user.id}">
+            <textarea name="text" rows="3" class="form-control mb-2" placeholder="Enter message"
+                      required></textarea>
+            <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+        </form>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
