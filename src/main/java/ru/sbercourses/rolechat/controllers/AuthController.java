@@ -4,13 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.sbercourses.rolechat.dto.UserDto;
-import ru.sbercourses.rolechat.model.User;
 import ru.sbercourses.rolechat.service.UserService;
 import ru.sbercourses.rolechat.utils.mappers.UserMapper;
 
@@ -33,12 +31,10 @@ public class AuthController {
     }
 
     @GetMapping("/loginSuccess")
-    public String loginSuccess(HttpSession session, Model model) {
+    public String loginSuccess(HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByLogin(auth.getName());
         session.setAttribute("user", userService.getUserByLogin(auth.getName()));
-        model.addAttribute("user", user);
-        return "user";
+        return "redirect:/chats";
     }
 
     @GetMapping("/register")
