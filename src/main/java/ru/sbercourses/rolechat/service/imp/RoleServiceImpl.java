@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sbercourses.rolechat.dao.RoleRepository;
 import ru.sbercourses.rolechat.model.RoleEntity;
+import ru.sbercourses.rolechat.model.enums.Role;
+import ru.sbercourses.rolechat.model.exceptions.NoSuchRoleException;
 import ru.sbercourses.rolechat.service.RoleService;
 
 import java.util.Optional;
@@ -32,5 +34,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void addRole(RoleEntity role) {
         roleRepository.save(role);
+    }
+
+    @Override
+    public RoleEntity getRoleByRoleName(Role role) {
+        return roleRepository.getRoleEntityByRole(role)
+                .orElseThrow(() -> new NoSuchRoleException("No role with such role name" + role.name()));
     }
 }

@@ -1,6 +1,7 @@
 package ru.sbercourses.rolechat.service;
 
 import ru.sbercourses.rolechat.model.RoleEntity;
+import ru.sbercourses.rolechat.model.enums.Role;
 
 public interface RoleService {
 
@@ -9,4 +10,6 @@ public interface RoleService {
     void deleteEntityById(long roleId);
 
     void addRole(RoleEntity role);
+
+    RoleEntity getRoleByRoleName(Role role);
 }

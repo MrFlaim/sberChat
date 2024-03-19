@@ -9,20 +9,25 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.sbercourses.rolechat.dto.UserDto;
+import ru.sbercourses.rolechat.model.RoleEntity;
+import ru.sbercourses.rolechat.service.RoleService;
 import ru.sbercourses.rolechat.service.UserService;
 import ru.sbercourses.rolechat.utils.mappers.UserMapper;
 
 import javax.servlet.http.HttpSession;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("")
 public class AuthController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/login")
@@ -34,6 +39,8 @@ public class AuthController {
     public String loginSuccess(HttpSession session) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         session.setAttribute("user", userService.getUserByLogin(auth.getName()));
+        session.setAttribute("roles", userService.getUserByLogin(auth.getName())
+                .getRoles().stream().map(roleEntity -> roleEntity.getRole().name()).collect(Collectors.toSet()));
         return "redirect:/chats";
     }
 
@@ -45,7 +52,8 @@ public class AuthController {
     @PostMapping("/register")
     public String registerUser(@ModelAttribute UserDto userDto) {
         userDto.setPassword(userDto.getPassword());
-        userService.addUser(UserMapper.toUser(userDto));
+        RoleEntity role = roleService.getRoleByRoleName(userDto.getRole());
+        userService.addUser(UserMapper.toUser(userDto, role));
         return "redirect:/login";
     }
 }
