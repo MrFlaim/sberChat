@@ -8,10 +8,9 @@ import ru.sbercourses.rolechat.model.Chat;
 import ru.sbercourses.rolechat.model.Message;
 import ru.sbercourses.rolechat.model.MoneyRequest;
 import ru.sbercourses.rolechat.model.User;
-import ru.sbercourses.rolechat.service.ChatService;
-import ru.sbercourses.rolechat.service.MessageService;
-import ru.sbercourses.rolechat.service.MoneyRequestService;
-import ru.sbercourses.rolechat.service.UserService;
+import ru.sbercourses.rolechat.model.enums.CurrencyChar;
+import ru.sbercourses.rolechat.service.*;
+import ru.sbercourses.rolechat.utils.mappers.MoneyRequestCalculator;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -24,16 +23,19 @@ public class ChatController {
     MessageService messageService;
     MoneyRequestService moneyRequestService;
     UserService userService;
+    CurrencyRateService currencyRateService;
 
     @Autowired
     public ChatController(ChatService chatService,
                           MessageService messageService,
                           MoneyRequestService moneyRequestService,
-                          UserService userService) {
+                          UserService userService,
+                          CurrencyRateService currencyRateService) {
         this.chatService = chatService;
         this.messageService = messageService;
         this.moneyRequestService = moneyRequestService;
         this.userService = userService;
+        this.currencyRateService = currencyRateService;
     }
 
     @GetMapping("")
@@ -104,18 +106,40 @@ public class ChatController {
     @PostMapping("/{chatId}/moneyRequests/{moneyRequestId}/addMoney")
     public String addMoneyToRequest(@PathVariable("moneyRequestId") long moneyRequestId,
                                     HttpSession session,
-                                    @RequestParam("amount") long amount,
+                                    @RequestParam("amount") double amount,
+                                    @RequestParam("currency") CurrencyChar currency,
                                     Model model) {
         User user = (User) session.getAttribute("user");
-        MoneyRequest moneyRequest = moneyRequestService.getMoneyRequestById(moneyRequestId);
-        moneyRequest.getUsersWhoSendMoney().put(user, amount);
-        long totalDonate = moneyRequest.getUsersWhoSendMoney().values().stream().reduce(Long::sum).orElse(0L);
-        moneyRequest.setMoneyRequest(moneyRequest.getMoneyRequest() - totalDonate);
+        MoneyRequest moneyRequest =
+                MoneyRequestCalculator.getMoneyRequestWithAddingMoney(moneyRequestService,
+                        currencyRateService,
+                        moneyRequestId,
+                        amount,
+                        currency,
+                        user);
         moneyRequestService.updateMoneyRequest(moneyRequest);
         long chatId = (Long) session.getAttribute("chatId");
         session.removeAttribute("chatId");
         model.addAttribute("chatId", chatId);
         return "redirect:/chats/{chatId}/moneyRequests/{moneyRequestId}";
     }
+
+
+    @PostMapping("/{chatId}/moneyRequests/add")
+    public String addMoneyRequest(@PathVariable("chatId") long chatId,
+                                  @RequestParam("moneyRequest") double moneyRequestValue,
+                                  @RequestParam("currency") CurrencyChar currency,
+                                  HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        Chat chat = chatService.getChatById(chatId);
+        MoneyRequest moneyRequest = new MoneyRequest();
+        moneyRequest.setChat(chat);
+        moneyRequest.setMoneyRequest(moneyRequestValue);
+        moneyRequest.setCurrency(currency);
+        moneyRequest.setUserWhoNeedsMoney(user);
+        moneyRequestService.addMoneyRequest(moneyRequest);
+        return "redirect:/chats/{chatId}";
+    }
+
 
 }

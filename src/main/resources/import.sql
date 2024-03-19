@@ -35,10 +35,10 @@ INSERT INTO t_message (create_date, message, chat_id, user_id) VALUES ('2024-03-
 INSERT INTO t_message (create_date, message, chat_id, user_id) VALUES ('2024-03-11 12:10:00', 'Lets plan a meetup!', 2, 4);
 INSERT INTO t_message (create_date, message, chat_id, user_id) VALUES ('2024-03-11 12:15:00', 'Having a great time!', 3, 5);
 
-INSERT INTO t_money_request (money_request, chat_id, user_id) VALUES (100.0, 1, 1);
-INSERT INTO t_money_request (money_request, chat_id, user_id) VALUES (50.0, 2, 2);
-INSERT INTO t_money_request (money_request, chat_id, user_id) VALUES (75.0, 3, 3);
-INSERT INTO t_money_request (money_request, chat_id, user_id) VALUES (32.0, 1, 3);
+INSERT INTO t_money_request (money_request, chat_id, user_id, currency) VALUES (100.0, 1, 1, 'USD');
+INSERT INTO t_money_request (money_request, chat_id, user_id, currency) VALUES (50.0, 2, 2, 'RUB');
+INSERT INTO t_money_request (money_request, chat_id, user_id, currency) VALUES (75.0, 3, 3, 'RUB');
+INSERT INTO t_money_request (money_request, chat_id, user_id, currency) VALUES (32.0, 1, 3, 'RUB');
 
 INSERT INTO t_user_to_money_request (money_request_id, money_send, user_id) VALUES (1, 50, 2);
 INSERT INTO t_user_to_money_request (money_request_id, money_send, user_id) VALUES (1, 25, 3);

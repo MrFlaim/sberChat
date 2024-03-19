@@ -1,5 +1,7 @@
 package ru.sbercourses.rolechat.model;
 
+import ru.sbercourses.rolechat.model.enums.CurrencyChar;
+
 import javax.persistence.*;
 import java.util.Map;
 
@@ -17,6 +19,9 @@ public class MoneyRequest {
 
     @Column(name = "money_request", nullable = false)
     private double moneyRequest;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency")
+    private CurrencyChar currency = CurrencyChar.RUB;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -26,16 +31,17 @@ public class MoneyRequest {
     @CollectionTable(name = "t_user_to_money_request", joinColumns = @JoinColumn(name = "money_request_id"))
     @MapKeyJoinColumn(name = "user_id")
     @Column(name = "money_send")
-    private Map<User, Long> usersWhoSendMoney;
+    private Map<User, Double> usersWhoSendMoney;
 
 
     public MoneyRequest() {
     }
 
-    public MoneyRequest(long id, Chat chat, double moneyRequest, User userWhoNeedsMoney, Map<User, Long> usersWhoSendMoney) {
+    public MoneyRequest(long id, Chat chat, double moneyRequest, CurrencyChar currency, User userWhoNeedsMoney, Map<User, Double> usersWhoSendMoney) {
         this.id = id;
         this.chat = chat;
         this.moneyRequest = moneyRequest;
+        this.currency = currency;
         this.userWhoNeedsMoney = userWhoNeedsMoney;
         this.usersWhoSendMoney = usersWhoSendMoney;
     }
@@ -72,11 +78,19 @@ public class MoneyRequest {
         this.userWhoNeedsMoney = userWhoNeedsMoney;
     }
 
-    public Map<User, Long> getUsersWhoSendMoney() {
+    public Map<User, Double> getUsersWhoSendMoney() {
         return usersWhoSendMoney;
     }
 
-    public void setUsersWhoSendMoney(Map<User, Long> usersWhoSendMoney) {
+    public void setUsersWhoSendMoney(Map<User, Double> usersWhoSendMoney) {
         this.usersWhoSendMoney = usersWhoSendMoney;
+    }
+
+    public CurrencyChar getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(CurrencyChar currency) {
+        this.currency = currency;
     }
 }
