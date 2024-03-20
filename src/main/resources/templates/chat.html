@@ -35,52 +35,42 @@
         <h2 class="text-center text-white" th:text="${chat.chatName}"></h2>
     </header>
     <div class="col-md-12">
-        <div class="sidebar">
-            <div class="collapse" id="sidebarContent">
-                <div class="col-md-12">
-                    <div class="sidebar">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-bordered">
-                                    <thead class="thead-dark">
-                                    <tr>
-                                        <th>Money Request</th>
-                                        <th>Currency</th>
-                                        <th>User Name</th>
-                                        <th>User Surname</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="moneyRequest : ${moneyRequests}">
-                                        <td>
-                                            <a th:href="@{/chats/{chatId}/moneyRequests/{moneyRequestId}(chatId=${chat.id}, moneyRequestId=${moneyRequest.id})}"
-                                               th:text="${#numbers.formatDecimal(moneyRequest.moneyRequest,  1, 'COMMA', 3, 'POINT')}"></a>
-                                        </td>
-                                        <td th:text="${moneyRequest.currency}"></td>
-                                        <td th:text="${moneyRequest.userWhoNeedsMoney.name}"></td>
-                                        <td th:text="${moneyRequest.userWhoNeedsMoney.surname}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h2 class="text-center">Add Money Request</h2>
-                                <form th:action="@{/chats/{chatId}/moneyRequests/add(chatId=${chat.id})}" method="post">
-                                    <input type="hidden" name="chatId" th:value="${chat.id}">
-                                    <input type="number" name="moneyRequest" class="form-control mb-2"
-                                           placeholder="Enter money request" required>
-                                    <select name="currency" class="form-control mb-2" required>
-                                        <option th:each="currency : ${T(ru.sbercourses.rolechat.model.enums.CurrencyChar).values()}"
-                                                th:value="${currency}" th:text="${currency}"></option>
-                                    </select>
-                                    <button type="submit" class="btn btn-primary">Add Money Request</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="collapse" id="sidebarContent">
+            <div class="row">
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Money Request</th>
+                        <th>Currency</th>
+                        <th>User Name</th>
+                        <th>User Surname</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="moneyRequest : ${moneyRequests}">
+                        <td>
+                            <a th:href="@{/chats/{chatId}/moneyRequests/{moneyRequestId}(chatId=${chat.id}, moneyRequestId=${moneyRequest.id})}"
+                               th:text="${#numbers.formatDecimal(moneyRequest.moneyRequest,  1, 'COMMA', 3, 'POINT')}"></a>
+                        </td>
+                        <td th:text="${moneyRequest.currency}"></td>
+                        <td th:text="${moneyRequest.userWhoNeedsMoney.name}"></td>
+                        <td th:text="${moneyRequest.userWhoNeedsMoney.surname}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <h2 class="text-center">Add Money Request</h2>
+                <form th:action="@{/chats/{chatId}/moneyRequests/add(chatId=${chat.id})}" method="post">
+                    <input type="hidden" name="chatId" th:value="${chat.id}">
+                    <input type="number" name="moneyRequest" class="form-control mb-2"
+                           placeholder="Enter money request" required>
+                    <select name="currency" class="form-control mb-2" required>
+                        <option th:each="currency : ${T(ru.sbercourses.rolechat.model.enums.CurrencyChar).values()}"
+                                th:value="${currency}" th:text="${currency}"></option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Add Money Request</button>
+                </form>
             </div>
         </div>
     </div>
