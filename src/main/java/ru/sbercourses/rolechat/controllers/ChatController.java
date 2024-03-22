@@ -86,7 +86,7 @@ public class ChatController {
                               @RequestParam("text") String newText,
                               Model model) {
         Message reWriteMessage = messageService.getMessageById(messageId);
-        reWriteMessage.setMessage(newText + "(Редактированно)" + new Date());
+        reWriteMessage.setMessage(newText + " (Редактированно) " + new Date());
         messageService.updateMessage(reWriteMessage);
         model.addAttribute("editMessage", reWriteMessage);
         return "redirect:/chats/" + chatId;
