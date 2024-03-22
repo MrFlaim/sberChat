@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.sbercourses.rolechat.dao.UserRepository;
 import ru.sbercourses.rolechat.model.User;
 import ru.sbercourses.rolechat.model.exceptions.NoSuchUserException;
+import ru.sbercourses.rolechat.model.exceptions.PhonenumberNotUniqueException;
+import ru.sbercourses.rolechat.model.exceptions.UsernameNotUniqueException;
 import ru.sbercourses.rolechat.service.UserService;
 
 import java.util.List;
@@ -26,6 +28,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
+        if (userRepository.existsByLogin(user.getUsername())) {
+            throw new UsernameNotUniqueException("Username is already taken");
+        }
+        if (userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
+            throw new PhonenumberNotUniqueException("Phonenumber is already taken");
+        }
         user.setOnlineStatus(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);

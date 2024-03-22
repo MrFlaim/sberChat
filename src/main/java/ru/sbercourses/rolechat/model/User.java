@@ -16,7 +16,7 @@ public class User {
     @Column(name = "login", nullable = false)
     private String login;
 
-    @Column(name = "password", nullable = false, length = 255)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

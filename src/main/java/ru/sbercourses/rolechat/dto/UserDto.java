@@ -2,13 +2,21 @@ package ru.sbercourses.rolechat.dto;
 
 import ru.sbercourses.rolechat.model.enums.Role;
 
-public class UserDto {
-    private String username;
-    private String password;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
+public class UserDto {
+    @NotBlank(message = "Username can not be empty")
+    private String username;
+    @NotBlank(message = "password can not be empty")
+    private String password;
+    @NotBlank(message = "Name can not be empty")
     private String name;
     private String surname;
     private Role role;
+
+    @NotBlank(message = "Phone number can not be empty")
+    @Pattern(regexp = "\\d{11}", message = "Phone number must contain 11 digits")
     private String phoneNumber;
 
     public UserDto(String username, String password, String name, String surname, Role role, String phoneNumber) {

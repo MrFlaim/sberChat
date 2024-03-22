@@ -7,11 +7,11 @@ INSERT INTO t_role (role) VALUES ('FAMILY_HEAD');
 
 
 --password: password
-INSERT INTO t_user (login, password, name, surname, phone_number, online_status)VALUES ('user1', '$2a$10$Gb5pKELZlRS2OFFOQ3cJiOw7n/vacj/sVr4DGgyf.vzYR2X8.QyfW', 'John', 'Doe', '123456789', false);
-INSERT INTO t_user (login, password, name, surname, phone_number, online_status)VALUES ('user2', '$2a$10$Gb5pKELZlRS2OFFOQ3cJiOw7n/vacj/sVr4DGgyf.vzYR2X8.QyfW', 'Jane', 'Smith', '987654321', false);
-INSERT INTO t_user (login, password, name, surname, phone_number, online_status)VALUES ('user3', '$2a$10$Gb5pKELZlRS2OFFOQ3cJiOw7n/vacj/sVr4DGgyf.vzYR2X8.QyfW', 'Alice', 'Smith', '5551234567', false);
-INSERT INTO t_user (login, password, name, surname, phone_number, online_status)VALUES ('user4', '$2a$10$Gb5pKELZlRS2OFFOQ3cJiOw7n/vacj/sVr4DGgyf.vzYR2X8.QyfW', 'Bob', 'Johnson', '9876543310', false);
-INSERT INTO t_user (login, password, name, surname, phone_number, online_status)VALUES ('admin', '$2a$10$Gb5pKELZlRS2OFFOQ3cJiOw7n/vacj/sVr4DGgyf.vzYR2X8.QyfW', 'Admin', 'Admin', '555555555', false);
+INSERT INTO t_user (login, password, name, surname, phone_number, online_status)VALUES ('user1', '$2a$10$Gb5pKELZlRS2OFFOQ3cJiOw7n/vacj/sVr4DGgyf.vzYR2X8.QyfW', 'John', 'Doe', '12345678976', false);
+INSERT INTO t_user (login, password, name, surname, phone_number, online_status)VALUES ('user2', '$2a$10$Gb5pKELZlRS2OFFOQ3cJiOw7n/vacj/sVr4DGgyf.vzYR2X8.QyfW', 'Jane', 'Smith', '98765432132', false);
+INSERT INTO t_user (login, password, name, surname, phone_number, online_status)VALUES ('user3', '$2a$10$Gb5pKELZlRS2OFFOQ3cJiOw7n/vacj/sVr4DGgyf.vzYR2X8.QyfW', 'Alice', 'Smith', '555123456731', false);
+INSERT INTO t_user (login, password, name, surname, phone_number, online_status)VALUES ('user4', '$2a$10$Gb5pKELZlRS2OFFOQ3cJiOw7n/vacj/sVr4DGgyf.vzYR2X8.QyfW', 'Bob', 'Johnson', '987654331015', false);
+INSERT INTO t_user (login, password, name, surname, phone_number, online_status)VALUES ('', '$2a$10$Gb5pKELZlRS2OFFOQ3cJiOw7n/vacj/sVr4DGgyf.vzYR2X8.QyfW', 'Admin', 'Admin', '55555555532', false);
 
 
 INSERT INTO t_user_role (user_id, role_id) VALUES (1, 1);
